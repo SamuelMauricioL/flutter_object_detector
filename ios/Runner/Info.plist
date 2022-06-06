@@ -7,6 +7,10 @@
 		<string>en</string>
 		<string>es</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>La aplicación necesita el uso de la camara</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>La aplicación necesita el uso del microfono</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>

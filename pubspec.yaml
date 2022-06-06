@@ -8,12 +8,17 @@ environment:
 
 dependencies:
   bloc: ^8.0.3
+  camera: ^0.9.7+1
   flutter:
     sdk: flutter
   flutter_bloc: ^8.0.1
   flutter_localizations:
     sdk: flutter
   intl: ^0.17.0
+  tflite:
+    git:
+      url: https://github.com/zhengbomo/flutter_tflite.git
+      ref: master
 
 dev_dependencies:
   bloc_test: ^9.0.3
@@ -25,3 +30,6 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   generate: true
+
+  assets:
+    - assets/
