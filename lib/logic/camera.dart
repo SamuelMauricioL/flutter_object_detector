@@ -45,11 +45,13 @@ class _CameraState extends State<Camera> {
 
             final recognitions = await Tflite.detectObjectOnFrame(
               bytesList: img.planes.map((plane) => plane.bytes).toList(),
-              imageHeight: img.height,
-              imageWidth: img.width,
-              // numResultsPerClass: 5,
+              imageHeight: img.width,
+              imageWidth: img.height,
+              // rotation: 90,
+              numResultsPerClass: 3,
               threshold: 0.4,
             );
+            print('===========> ${img.height} - ${img.width} || $recognitions');
 
             // final recognitions = await Tflite.detectObjectOnFrame(
             //   bytesList: img.planes.map((plane) => plane.bytes).toList(),

@@ -28,7 +28,6 @@ class BndBox extends StatelessWidget {
         final rect = resultModel.rect;
         final detectedClass = resultModel.detectedClass;
         final accuracy = resultModel.accuracy;
-        print('===========> ${resultModel.toJson()}');
 
         final _x = rect.x;
         final _w = rect.w;
