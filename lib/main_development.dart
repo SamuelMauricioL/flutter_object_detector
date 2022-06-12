@@ -1,10 +1,5 @@
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:object_detector/logic/detector.dart';
-
-// void main() {
-//   bootstrap(() => const App());
-// }
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
