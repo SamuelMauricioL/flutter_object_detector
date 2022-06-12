@@ -25,7 +25,6 @@ class _CameraCustomState extends State<CameraCustom> {
   CameraController? _cameraController;
   bool isDetecting = false;
 
-  // inicializando camara
   Future<void> initCamera() async {
     try {
       final cameras = await availableCameras();
@@ -94,12 +93,13 @@ class _CameraCustomState extends State<CameraCustom> {
     final screenRatio = screenH / screenW;
     final previewRatio = previewH / previewW;
 
-    return OverflowBox(
-      maxHeight:
-          screenRatio > previewRatio ? screenH : screenW / previewW * previewH,
-      maxWidth:
-          screenRatio > previewRatio ? screenH / previewH * previewW : screenW,
-      child: CameraPreview(_cameraController!),
-    );
+    // return OverflowBox(
+    //   maxHeight:
+    //       screenRatio > previewRatio ? screenH : screenW / previewW * previewH,
+    //   maxWidth:
+    //       screenRatio > previewRatio ? screenH / previewH * previewW : screenW,
+    //   child: CameraPreview(_cameraController!),
+    // );
+    return CameraPreview(_cameraController!);
   }
 }

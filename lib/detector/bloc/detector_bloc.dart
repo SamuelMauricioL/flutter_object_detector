@@ -19,8 +19,8 @@ class DetectorBloc extends Bloc<DetectorEvent, DetectorState> {
     Emitter emit,
   ) async {
     await Tflite.loadModel(
-      model: 'assets/ssd_mobilenet_v2.tflite',
-      labels: 'assets/ssd_mobilenet_v2.txt',
+      model: 'assets/ssd_mobilenet.tflite',
+      labels: 'assets/ssd_mobilenet.txt',
     );
     emit(DetectorLoading());
   }
