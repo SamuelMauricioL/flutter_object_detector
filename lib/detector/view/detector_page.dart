@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:object_detector/detector/bloc/detector_bloc.dart';
 import 'package:object_detector/detector/components/camera.dart';
-import 'package:tflite/tflite.dart';
 
 class DetectorPage extends StatelessWidget {
   const DetectorPage({Key? key}) : super(key: key);
@@ -18,35 +17,13 @@ class DetectorPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => DetectorBloc(),
-      child: const DetectorView(),
+      create: (_) => DetectorBloc()..add(LoadModel()),
+      child: DetectorView(),
     );
   }
 }
 
-class DetectorView extends StatefulWidget {
-  const DetectorView();
-
-  @override
-  State<DetectorView> createState() => _DetectorViewState();
-}
-
-class _DetectorViewState extends State<DetectorView> {
-  @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await _loadModel();
-    });
-    super.initState();
-  }
-
-  Future<void> _loadModel() async {
-    await Tflite.loadModel(
-      model: 'assets/ssd_mobilenet_v2.tflite',
-      labels: 'assets/ssd_mobilenet_v2.txt',
-    );
-  }
-
+class DetectorView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(

@@ -14,3 +14,5 @@ class SelectDetectedObject extends DetectorEvent {
 
   final ResultModel object;
 }
+
+class LoadModel extends DetectorEvent {}
