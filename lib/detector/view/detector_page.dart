@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:object_detector/detector/bloc/detector_bloc.dart';
-import 'package:object_detector/detector/components/camera.dart';
+import 'package:object_detector/detector/components/camera_custom.dart';
 
 class DetectorPage extends StatelessWidget {
   const DetectorPage({Key? key}) : super(key: key);
