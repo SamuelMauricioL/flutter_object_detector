@@ -1,18 +1,21 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
+import 'package:equatable/equatable.dart';
+import 'package:object_detector/detector/models/result_model.dart';
 
 part 'detector_event.dart';
 part 'detector_state.dart';
 
 class DetectorBloc extends Bloc<DetectorEvent, DetectorState> {
-  DetectorBloc() : super(DetectorInitial());
+  DetectorBloc() : super(DetectorLoading()) {
+    on<SelectDetectedObject>(_onDetectObjects);
+  }
 
-  @override
-  Stream<DetectorState> mapEventToState(
-    DetectorEvent event,
-  ) async* {
-    // TODO: implement mapEventToState
+  Future<void> _onDetectObjects(
+    SelectDetectedObject event,
+    Emitter emit,
+  ) async {
+    emit(DetectorLoaded(result: event.object));
   }
 }

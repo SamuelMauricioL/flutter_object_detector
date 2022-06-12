@@ -1,12 +1,13 @@
 // ignore_for_file: use_key_in_widget_constructors, avoid_print
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:object_detector/detector/bloc/detector_bloc.dart';
 import 'package:object_detector/detector/components/camera.dart';
-import 'package:object_detector/detector/models/result_model.dart';
 import 'package:tflite/tflite.dart';
 
-class DetectorPage extends StatefulWidget {
-  const DetectorPage();
+class DetectorPage extends StatelessWidget {
+  const DetectorPage({Key? key}) : super(key: key);
 
   static Page page() {
     return const MaterialPage<void>(
@@ -15,12 +16,22 @@ class DetectorPage extends StatefulWidget {
   }
 
   @override
-  State<DetectorPage> createState() => _DetectorPageState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => DetectorBloc(),
+      child: const DetectorView(),
+    );
+  }
 }
 
-class _DetectorPageState extends State<DetectorPage> {
-  ResultModel _resultModel = ResultModel.empty();
+class DetectorView extends StatefulWidget {
+  const DetectorView();
 
+  @override
+  State<DetectorView> createState() => _DetectorViewState();
+}
+
+class _DetectorViewState extends State<DetectorView> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -36,14 +47,6 @@ class _DetectorPageState extends State<DetectorPage> {
     );
   }
 
-  void setRecognitions(
-    ResultModel resultModel,
-  ) {
-    setState(() {
-      _resultModel = resultModel;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -51,13 +54,33 @@ class _DetectorPageState extends State<DetectorPage> {
         appBar: AppBar(
           elevation: 0,
           centerTitle: true,
-          title: Text(
-            '🤖 ${_resultModel.detectedClass} 📷',
-            style: const TextStyle(color: Colors.black87),
-            textAlign: TextAlign.center,
+          title: BlocBuilder<DetectorBloc, DetectorState>(
+            builder: (_, state) {
+              if (state is DetectorLoading) {
+                return const Text(
+                  '🤖 ... 📷',
+                  style: TextStyle(color: Colors.black87),
+                  textAlign: TextAlign.center,
+                );
+              }
+              if (state is DetectorLoaded) {
+                return Text(
+                  '🤖 ${state.result.detectedClass} 📷',
+                  style: const TextStyle(color: Colors.black87),
+                  textAlign: TextAlign.center,
+                );
+              }
+              return const SizedBox.shrink();
+            },
           ),
         ),
-        body: CameraCustom(setRecognitions: setRecognitions),
+        body: CameraCustom(
+          setRecognitions: (object) {
+            context
+                .read<DetectorBloc>()
+                .add(SelectDetectedObject(object: object));
+          },
+        ),
       ),
     );
   }
