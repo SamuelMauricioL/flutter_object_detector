@@ -1,5 +1,3 @@
-// ignore_for_file: use_key_in_widget_constructors, avoid_print
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:object_detector/detector/bloc/detector_bloc.dart';
@@ -18,12 +16,14 @@ class DetectorPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => DetectorBloc()..add(LoadModel()),
-      child: DetectorView(),
+      child: const DetectorView(),
     );
   }
 }
 
 class DetectorView extends StatelessWidget {
+  const DetectorView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
