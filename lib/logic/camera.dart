@@ -4,9 +4,10 @@ import 'dart:math' as math;
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:object_detector/logic/models.dart';
 import 'package:tflite/tflite.dart';
 
-typedef Callback = void Function(List<dynamic> list, int h, int w);
+typedef Callback = void Function(ResultModel list);
 
 class Camera extends StatefulWidget {
   const Camera({
@@ -21,7 +22,7 @@ class Camera extends StatefulWidget {
 }
 
 class _CameraState extends State<Camera> {
-  CameraController? controller;
+  CameraController? _cameraController;
   bool isDetecting = false;
 
   // inicializando camara
@@ -35,10 +36,10 @@ class _CameraState extends State<Camera> {
       setState(() {});
 
       // Inicializando el controller
-      controller = CameraController(cameras[0], ResolutionPreset.medium);
-      await controller!.initialize();
+      _cameraController = CameraController(cameras[0], ResolutionPreset.medium);
+      await _cameraController!.initialize();
       setState(() {
-        controller!.startImageStream(
+        _cameraController!.startImageStream(
           (CameraImage img) async {
             if (isDetecting) return;
             isDetecting = true;
@@ -47,28 +48,18 @@ class _CameraState extends State<Camera> {
               bytesList: img.planes.map((plane) => plane.bytes).toList(),
               imageHeight: img.width,
               imageWidth: img.height,
-              // rotation: 90,
               numResultsPerClass: 3,
               threshold: 0.4,
             );
             print('===========> ${img.height} - ${img.width} || $recognitions');
-
-            // final recognitions = await Tflite.detectObjectOnFrame(
-            //   bytesList: img.planes.map((plane) => plane.bytes).toList(),
-            //   model: 'YOLO',
-            //   imageMean: 0,
-            //   imageStd: 255,
-            //   threshold: 0.3, // defaults to 0.1
-            //   numResultsPerClass: 2, // defaults to 5
-            // );
-            widget.setRecognitions(
-              recognitions!,
-              img.height,
-              img.width,
-            );
+            if (recognitions != null && recognitions.isNotEmpty) {
+              widget.setRecognitions(ResultModel.fromJson(recognitions[0]));
+            }
             isDetecting = false;
           },
-        );
+        ).onError((error, stackTrace) {
+          print('ERROR: $error || stackTrace: $stackTrace');
+        });
       });
     } on CameraException catch (e) {
       print('Error: ${e.code}\nError Message: ${e.description}');
@@ -85,20 +76,20 @@ class _CameraState extends State<Camera> {
 
   @override
   void dispose() {
-    controller?.dispose();
+    _cameraController?.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (controller == null || !controller!.value.isInitialized) {
-      return Container();
+    if (_cameraController == null || !_cameraController!.value.isInitialized) {
+      return const SizedBox.shrink();
     }
 
     var tmp = MediaQuery.of(context).size;
     final screenH = math.max(tmp.height, tmp.width);
     final screenW = math.min(tmp.height, tmp.width);
-    tmp = controller!.value.previewSize!;
+    tmp = _cameraController!.value.previewSize!;
     final previewH = math.max(tmp.height, tmp.width);
     final previewW = math.min(tmp.height, tmp.width);
     final screenRatio = screenH / screenW;
@@ -109,7 +100,7 @@ class _CameraState extends State<Camera> {
           screenRatio > previewRatio ? screenH : screenW / previewW * previewH,
       maxWidth:
           screenRatio > previewRatio ? screenH / previewH * previewW : screenW,
-      child: CameraPreview(controller!),
+      child: CameraPreview(_cameraController!),
     );
   }
 }

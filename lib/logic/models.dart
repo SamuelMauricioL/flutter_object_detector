@@ -22,6 +22,14 @@ class ResultModel {
     );
   }
 
+  factory ResultModel.empty() {
+    return ResultModel(
+      rect: Rect(w: 1, x: 1, h: 1, y: 1),
+      accuracy: 0,
+      detectedClass: '...',
+    );
+  }
+
   Rect rect;
   int accuracy;
   String detectedClass;
