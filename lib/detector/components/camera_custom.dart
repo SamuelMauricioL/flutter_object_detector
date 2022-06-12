@@ -1,7 +1,5 @@
 // ignore_for_file: avoid_print
 
-import 'dart:math' as math;
-
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:object_detector/detector/models/result_model.dart';
@@ -83,23 +81,6 @@ class _CameraCustomState extends State<CameraCustom> {
     if (_cameraController == null || !_cameraController!.value.isInitialized) {
       return const SizedBox.shrink();
     }
-
-    var tmp = MediaQuery.of(context).size;
-    final screenH = math.max(tmp.height, tmp.width);
-    final screenW = math.min(tmp.height, tmp.width);
-    tmp = _cameraController!.value.previewSize!;
-    final previewH = math.max(tmp.height, tmp.width);
-    final previewW = math.min(tmp.height, tmp.width);
-    final screenRatio = screenH / screenW;
-    final previewRatio = previewH / previewW;
-
-    // return OverflowBox(
-    //   maxHeight:
-    //       screenRatio > previewRatio ? screenH : screenW / previewW * previewH,
-    //   maxWidth:
-    //       screenRatio > previewRatio ? screenH / previewH * previewW : screenW,
-    //   child: CameraPreview(_cameraController!),
-    // );
     return CameraPreview(_cameraController!);
   }
 }
