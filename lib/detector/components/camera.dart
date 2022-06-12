@@ -4,13 +4,13 @@ import 'dart:math' as math;
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:object_detector/logic/models.dart';
+import 'package:object_detector/detector/models/result_model.dart';
 import 'package:tflite/tflite.dart';
 
-typedef Callback = void Function(ResultModel list);
+typedef Callback = void Function(ResultModel resultModel);
 
-class Camera extends StatefulWidget {
-  const Camera({
+class CameraCustom extends StatefulWidget {
+  const CameraCustom({
     Key? key,
     required this.setRecognitions,
   }) : super(key: key);
@@ -18,10 +18,10 @@ class Camera extends StatefulWidget {
   final Callback setRecognitions;
 
   @override
-  State<Camera> createState() => _CameraState();
+  State<CameraCustom> createState() => _CameraCustomState();
 }
 
-class _CameraState extends State<Camera> {
+class _CameraCustomState extends State<CameraCustom> {
   CameraController? _cameraController;
   bool isDetecting = false;
 

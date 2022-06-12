@@ -9,5 +9,5 @@ import 'package:object_detector/app/app.dart';
 import 'package:object_detector/bootstrap.dart';
 
 void main() {
-  bootstrap(() => const App());
+  bootstrap(() => const AppPage());
 }
