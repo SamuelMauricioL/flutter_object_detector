@@ -51,7 +51,6 @@ class _CameraState extends State<Camera> {
               numResultsPerClass: 3,
               threshold: 0.4,
             );
-            print('===========> ${img.height} - ${img.width} || $recognitions');
             if (recognitions != null && recognitions.isNotEmpty) {
               widget.setRecognitions(ResultModel.fromJson(recognitions[0]));
             }
