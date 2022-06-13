@@ -43,8 +43,8 @@ class _CameraCustomState extends State<CameraCustom> {
 
             final recognitions = await Tflite.detectObjectOnFrame(
               bytesList: img.planes.map((plane) => plane.bytes).toList(),
-              imageHeight: img.width,
-              imageWidth: img.height,
+              imageHeight: img.width, // 480
+              imageWidth: img.height, // 720
               numResultsPerClass: 3,
               threshold: 0.4,
             );
