@@ -45,7 +45,7 @@ class _CameraCustomState extends State<CameraCustom> {
               bytesList: img.planes.map((plane) => plane.bytes).toList(),
               imageHeight: img.width, // 480
               imageWidth: img.height, // 720
-              numResultsPerClass: 3,
+              numResultsPerClass: 1,
               threshold: 0.4,
             );
             if (recognitions != null && recognitions.isNotEmpty) {
